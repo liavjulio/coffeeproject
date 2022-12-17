@@ -8,7 +8,7 @@ using namespace std;
 #define PIN_CASES_NUM 2
 #define ENTER 13
 
-#define PIN 1234
+
 #define MAX_COUNT_PIN_INPUT 3
 
 #define SLEEP 50
@@ -28,7 +28,7 @@ bool isEnoughMoneyToBuy(double userBalance, double coffeePrice);
 double buyCoffee(double userBalance, double price);
 
 int inputPIN(int pin);
-bool isPinValid(int pin);
+bool isPinValid(int pin, int& PIN);
 
 int addCups(int addedCups);
 bool isNumberAddedCupsCorrect(int addedCups);
@@ -41,9 +41,12 @@ void showErrorMessageWithParametr(int errorNum, double parametr);
 
 void Set_Price(double& ESPRESSO_PRICE, double& CAPPUCCINO_PRICE, double& LATTE_PRICE);
 
+void Change_PIN(int& PIN);
+
 int main()
 {
 	double ESPRESSO_PRICE = 1, CAPPUCCINO_PRICE = 1.5, LATTE_PRICE = 1.5;
+	int PIN = 1234;
 	int cups = 7, addedCups = 0, pin = 0, countPinInput = 0, menuChoice, depositeChoise, adminChoice, pinChoice;
 	double userBalance = 0.0, shopBalance = 0.0;
 	bool mainMenu = true, depositeMenu, adminMenu, pinMenu;
@@ -159,7 +162,7 @@ int main()
 				{
 				case 1:
 					pin = inputPIN(pin);
-					adminMenu = isPinValid(pin);
+					adminMenu = isPinValid(pin, PIN);
 
 					if (!adminMenu)
 					{
@@ -207,6 +210,8 @@ int main()
 							Set_Price(ESPRESSO_PRICE, CAPPUCCINO_PRICE, LATTE_PRICE);
 							break;
 						case 4:
+							Change_PIN(PIN);
+						case 5:
 							adminMenu = false;
 							pinMenu = false;
 							break;
@@ -281,7 +286,8 @@ void showAdminMenu(double shopBalance, int cups)
 	cout << "1. Take money from shop" << endl;
 	cout << "2. Add cups" << endl;
 	cout << "3. Change price" << endl;
-	cout << "4. Back to main menu" << endl;
+	cout << "4. Change PIN" << endl;
+	cout << "5. Back to main menu" << endl;
 	cout << "------------------------" << endl;
 }
 
@@ -347,7 +353,7 @@ int inputPIN(int pin)
 	return pin;
 }
 
-bool isPinValid(int pin)
+bool isPinValid(int pin, int& PIN)
 {
 	return pin == PIN;
 }
@@ -463,4 +469,10 @@ void Set_Price(double& ESPRESSO_PRICE, double& CAPPUCCINO_PRICE, double& LATTE_P
 		cout << "1- espresso , 2- cappuccino , 3- latte , 4- exit" << endl;
 		cin >> choise;
 	}
+}
+
+void Change_PIN(int& PIN)
+{
+	cout << "Enter your new PIN" << endl;
+	cin >> PIN;
 }
