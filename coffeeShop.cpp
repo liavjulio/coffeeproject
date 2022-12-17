@@ -8,14 +8,14 @@ using namespace std;
 #define ADMIN_CASES_NUM 3
 #define PIN_CASES_NUM 2
 #define ENTER 13
-#define Winner 1
+#define Winner 3
 
 
 #define MAX_COUNT_PIN_INPUT 3
 
 #define SLEEP 50
 
-void showMainMenu(double userBalance, int ESPRESSO_PRICE, int CAPPUCCINO_PRICE, int LATTE_PRICE);
+void showMainMenu(double userBalance, double ESPRESSO_PRICE, double CAPPUCCINO_PRICE, double LATTE_PRICE);
 void showDepositeMenu(double userBalance);
 void showAdminMenu(double shopBalance, int cups);
 void showPinMenu();
@@ -27,7 +27,7 @@ void showWithdrawMoneyMessage(double shopBalance);
 int getChoice();
 
 bool isEnoughMoneyToBuy(double userBalance, double coffeePrice);
-double buyCoffee(double userBalance, double price, int& countorder);
+double buyCoffee(double userBalance, double price, int& countorder, double &sum);
 
 int inputPIN(int pin);
 bool isPinValid(int pin, int& PIN);
@@ -47,11 +47,14 @@ void Change_PIN(int& PIN);
 
 bool Check_Winner(double& userBalance, int& countorder);
 
+void CalculatedMoney(double price, double &Sum);
+
 int main()
 {
-	double ESPRESSO_PRICE = 1, CAPPUCCINO_PRICE = 1.5, LATTE_PRICE = 1.5;
+	double ESPRESSO_PRICE = 1, CAPPUCCINO_PRICE = 1.5, LATTE_PRICE = 2.5;
 	int countorder = 0;
 	int PIN = 1234;
+	double Sum = 0;
 	int cups = 7, addedCups = 0, pin = 0, countPinInput = 0, menuChoice, depositeChoise, adminChoice, pinChoice;
 	double userBalance = 0.0, shopBalance = 0.0;
 	bool mainMenu = true, depositeMenu, adminMenu, pinMenu;
@@ -115,7 +118,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, ESPRESSO_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, ESPRESSO_PRICE, countorder);
+				userBalance = buyCoffee(userBalance, ESPRESSO_PRICE, countorder, Sum);
 				cups--;
 			}
 			else
@@ -131,7 +134,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, CAPPUCCINO_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, CAPPUCCINO_PRICE, countorder);
+				userBalance = buyCoffee(userBalance, CAPPUCCINO_PRICE, countorder, Sum);
 				cups--;
 			}
 			else
@@ -147,7 +150,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, LATTE_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, LATTE_PRICE, countorder);
+				userBalance = buyCoffee(userBalance, LATTE_PRICE, countorder, Sum);
 				cups--;
 			}
 			else
@@ -216,7 +219,12 @@ int main()
 							break;
 						case 4:
 							Change_PIN(PIN);
+							break;
 						case 5:
+							cout << "Sum: " << Sum << endl;
+							pauseConsole();
+							break;
+						case 6:
 							adminMenu = false;
 							pinMenu = false;
 							break;
@@ -249,7 +257,7 @@ int main()
 
 
 
-void showMainMenu(double userBalance, int ESPRESSO_PRICE, int CAPPUCCINO_PRICE, int LATTE_PRICE)
+void showMainMenu(double userBalance, double ESPRESSO_PRICE, double CAPPUCCINO_PRICE, double LATTE_PRICE)
 {
 	system("cls");
 	cout << "Welcome to CoffeeShop!" << endl;
@@ -294,7 +302,8 @@ void showAdminMenu(double shopBalance, int cups)
 	cout << "2. Add cups" << endl;
 	cout << "3. Change price" << endl;
 	cout << "4. Change PIN" << endl;
-	cout << "5. Back to main menu" << endl;
+	cout << "5. Check sum" << endl;
+	cout << "6. Back to main menu" << endl;
 	cout << "------------------------" << endl;
 }
 
@@ -347,12 +356,13 @@ bool isEnoughMoneyToBuy(double userBalance, double coffeePrice)
 	return coffeePrice <= userBalance;
 }
 
-double buyCoffee(double userBalance, double price, int& countorder)
+double buyCoffee(double userBalance, double price, int& countorder, double &Sum)
 {
 	if (Check_Winner(userBalance, countorder) == 1)
 	{
 		return userBalance;
 	}
+	CalculatedMoney(price,Sum);
 	return userBalance - price;
 }
 
@@ -494,11 +504,16 @@ bool Check_Winner(double& userBalance, int& countorder)
 	countorder++;
 	if (countorder == Winner)
 	{
-		cout << "Congratulations you are The 3 custumer now you can order one free coffe" << endl;
+		cout << "Congratulations, Free coffe" << endl;
 		countorder = 0;
 		pauseConsole();
 		return true;
 	}
 	pauseConsole();
 	return false;
+}
+
+void CalculatedMoney(double price,double &Sum)
+{
+	Sum += price;
 }
