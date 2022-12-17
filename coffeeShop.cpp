@@ -245,9 +245,9 @@ void showMainMenu(double userBalance, int ESPRESSO_PRICE, int CAPPUCCINO_PRICE, 
 	showBalance(userBalance);
 	cout << "------------------------" << endl;
 	cout << "1. Deposit money" << endl;
-	cout << "2. Espresso  	   " << ESPRESSO_PRICE << " BYN" << endl;
-	cout << "3. Cappuccino	 " << CAPPUCCINO_PRICE << " BYN" << endl;
-	cout << "4. Latte     	 " << LATTE_PRICE << " BYN" << endl;
+	cout << "2. Espresso  	   " << ESPRESSO_PRICE << " $" << endl;
+	cout << "3. Cappuccino	 " << CAPPUCCINO_PRICE << " $" << endl;
+	cout << "4. Latte     	 " << LATTE_PRICE << " $" << endl;
 	cout << "5. Service" << endl;
 	cout << "6. Exit from shop" << endl;
 	cout << "------------------------" << endl;
@@ -261,11 +261,11 @@ void showDepositeMenu(double userBalance)
 	cout << "------------------------" << endl;
 	showBalance(userBalance);
 	cout << "------------------------" << endl;
-	cout << "1. 0.1 BYN" << endl;
-	cout << "2. 0.2 BYN" << endl;
-	cout << "3. 0.5 BYN" << endl;
-	cout << "4. 1.0 BYN" << endl;
-	cout << "5. 2.0 BYN" << endl;
+	cout << "1. 0.1 $" << endl;
+	cout << "2. 0.2 $" << endl;
+	cout << "3. 0.5 $" << endl;
+	cout << "4. 1.0 $" << endl;
+	cout << "5. 2.0 $" << endl;
 	cout << "6. Back to main menu" << endl;
 	cout << "------------------------" << endl;
 }
@@ -305,7 +305,7 @@ void pauseConsole()
 
 void showBalance(double balance)
 {
-	cout << "Current balance: " << balance << " BYN" << endl;
+	cout << "Current balance: " << balance << " $" << endl;
 }
 
 void showCupsNumber(int cups)
@@ -315,7 +315,7 @@ void showCupsNumber(int cups)
 
 void showWithdrawMoneyMessage(double shopBalance)
 {
-	cout << shopBalance << " BYN was received." << endl;
+	cout << shopBalance << " $ was received." << endl;
 	pauseConsole();
 }
 
@@ -421,7 +421,7 @@ void showErrorMessageWithParametr(int errorNum, double parametr)
 	{
 	case 1:
 		cout << "Not enough money to buy coffee!" << endl;
-		cout << "To buy, you need to deposit " << parametr << " BYN more." << endl;
+		cout << "To buy, you need to deposit " << parametr << " $ more." << endl;
 		pauseConsole();
 		break;
 	case 2:
