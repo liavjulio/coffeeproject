@@ -2,11 +2,13 @@
 #include <conio.h>
 #include <windows.h>
 using namespace std;
+
 #define MENU_CASES_NUM 6
 #define DEPOSITE_MONEY_CASES_NUM 6
 #define ADMIN_CASES_NUM 3
 #define PIN_CASES_NUM 2
 #define ENTER 13
+#define Winner 1
 
 
 #define MAX_COUNT_PIN_INPUT 3
@@ -25,7 +27,7 @@ void showWithdrawMoneyMessage(double shopBalance);
 int getChoice();
 
 bool isEnoughMoneyToBuy(double userBalance, double coffeePrice);
-double buyCoffee(double userBalance, double price);
+double buyCoffee(double userBalance, double price, int& countorder);
 
 int inputPIN(int pin);
 bool isPinValid(int pin, int& PIN);
@@ -43,9 +45,12 @@ void Set_Price(double& ESPRESSO_PRICE, double& CAPPUCCINO_PRICE, double& LATTE_P
 
 void Change_PIN(int& PIN);
 
+bool Check_Winner(double& userBalance, int& countorder);
+
 int main()
 {
 	double ESPRESSO_PRICE = 1, CAPPUCCINO_PRICE = 1.5, LATTE_PRICE = 1.5;
+	int countorder = 0;
 	int PIN = 1234;
 	int cups = 7, addedCups = 0, pin = 0, countPinInput = 0, menuChoice, depositeChoise, adminChoice, pinChoice;
 	double userBalance = 0.0, shopBalance = 0.0;
@@ -110,7 +115,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, ESPRESSO_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, ESPRESSO_PRICE);
+				userBalance = buyCoffee(userBalance, ESPRESSO_PRICE, countorder);
 				cups--;
 			}
 			else
@@ -126,7 +131,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, CAPPUCCINO_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, CAPPUCCINO_PRICE);
+				userBalance = buyCoffee(userBalance, CAPPUCCINO_PRICE, countorder);
 				cups--;
 			}
 			else
@@ -142,7 +147,7 @@ int main()
 			else if (isEnoughMoneyToBuy(userBalance, LATTE_PRICE))
 			{
 				showProgressBar();
-				userBalance = buyCoffee(userBalance, LATTE_PRICE);
+				userBalance = buyCoffee(userBalance, LATTE_PRICE, countorder);
 				cups--;
 			}
 			else
@@ -242,6 +247,8 @@ int main()
 	return 0;
 }
 
+
+
 void showMainMenu(double userBalance, int ESPRESSO_PRICE, int CAPPUCCINO_PRICE, int LATTE_PRICE)
 {
 	system("cls");
@@ -250,7 +257,7 @@ void showMainMenu(double userBalance, int ESPRESSO_PRICE, int CAPPUCCINO_PRICE, 
 	showBalance(userBalance);
 	cout << "------------------------" << endl;
 	cout << "1. Deposit money" << endl;
-	cout << "2. Espresso  	   " << ESPRESSO_PRICE << " $" << endl;
+	cout << "2. Espresso  	 " << ESPRESSO_PRICE << " $" << endl;
 	cout << "3. Cappuccino	 " << CAPPUCCINO_PRICE << " $" << endl;
 	cout << "4. Latte     	 " << LATTE_PRICE << " $" << endl;
 	cout << "5. Service" << endl;
@@ -305,7 +312,7 @@ void pauseConsole()
 {
 	do
 	{
-		cout << "Press the Enter key to continue.";
+		cout << "Press the Enter key to continue." << endl;
 	} while (_getch() != ENTER);
 }
 
@@ -340,8 +347,12 @@ bool isEnoughMoneyToBuy(double userBalance, double coffeePrice)
 	return coffeePrice <= userBalance;
 }
 
-double buyCoffee(double userBalance, double price)
+double buyCoffee(double userBalance, double price, int& countorder)
 {
+	if (Check_Winner(userBalance, countorder) == 1)
+	{
+		return userBalance;
+	}
 	return userBalance - price;
 }
 
@@ -385,7 +396,6 @@ void showProgressBar()
 
 	showCursor(true);
 	cout << "Coffee done! You can take it.    " << endl;
-	pauseConsole();
 }
 
 void showCursor(bool visible)
@@ -469,10 +479,26 @@ void Set_Price(double& ESPRESSO_PRICE, double& CAPPUCCINO_PRICE, double& LATTE_P
 		cout << "1- espresso , 2- cappuccino , 3- latte , 4- exit" << endl;
 		cin >> choise;
 	}
+
+
 }
 
 void Change_PIN(int& PIN)
 {
 	cout << "Enter your new PIN" << endl;
 	cin >> PIN;
+}
+
+bool Check_Winner(double& userBalance, int& countorder)
+{
+	countorder++;
+	if (countorder == Winner)
+	{
+		cout << "Congratulations you are The 3 custumer now you can order one free coffe" << endl;
+		countorder = 0;
+		pauseConsole();
+		return true;
+	}
+	pauseConsole();
+	return false;
 }
