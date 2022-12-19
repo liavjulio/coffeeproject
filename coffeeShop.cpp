@@ -49,12 +49,15 @@ bool Check_Winner(double& userBalance, int& countorder);
 
 void CalculatedMoney(double price, double &Sum);
 
+void Check_most(int menuChoice, int &count_espresso,int &count_cappuccino, int &count_latte);
+
 int main()
 {
 	double ESPRESSO_PRICE = 1, CAPPUCCINO_PRICE = 1.5, LATTE_PRICE = 2.5;
 	int countorder = 0;
 	int PIN = 1234;
 	double Sum = 0;
+    int count_espresso = 0,count_cappuccino = 0, count_latte = 0;
 	int cups = 7, addedCups = 0, pin = 0, countPinInput = 0, menuChoice, depositeChoise, adminChoice, pinChoice;
 	double userBalance = 0.0, shopBalance = 0.0;
 	bool mainMenu = true, depositeMenu, adminMenu, pinMenu;
@@ -119,6 +122,7 @@ int main()
 			{
 				showProgressBar();
 				userBalance = buyCoffee(userBalance, ESPRESSO_PRICE, countorder, Sum);
+                Check_most(menuChoice,count_espresso,count_cappuccino,count_latte);
 				cups--;
 			}
 			else
@@ -135,6 +139,7 @@ int main()
 			{
 				showProgressBar();
 				userBalance = buyCoffee(userBalance, CAPPUCCINO_PRICE, countorder, Sum);
+                Check_most(menuChoice,count_espresso,count_cappuccino,count_latte);
 				cups--;
 			}
 			else
@@ -151,6 +156,7 @@ int main()
 			{
 				showProgressBar();
 				userBalance = buyCoffee(userBalance, LATTE_PRICE, countorder, Sum);
+                Check_most(menuChoice,count_espresso,count_cappuccino,count_latte);
 				cups--;
 			}
 			else
@@ -224,7 +230,45 @@ int main()
 							cout << "Sum: " << Sum << endl;
 							pauseConsole();
 							break;
-						case 6:
+                        case 6:
+                            if(count_cappuccino>count_latte&&count_cappuccino>count_espresso)
+                            {
+                                cout<<"Most sell coffee is cappuccino"<<endl;
+                                cout<<count_cappuccino<<" cappuccino"<<endl;
+                            }
+                            else if(count_cappuccino==count_espresso&&count_cappuccino==count_latte)
+                            {
+                                cout<<"Same selling all coffee"<<endl;
+                                cout<<count_cappuccino<<" Amount of coffee of each type"<<endl;
+                            }
+                            else if(count_latte>count_cappuccino&&count_latte>count_espresso)
+                            {
+                                cout<<"Most sell coffee is latte"<<endl;
+                                cout<<count_cappuccino<<" latte"<<endl;
+                            }
+                            else if(count_espresso>count_cappuccino&&count_espresso>count_latte)
+                            {
+                                cout<<"Most sell coffee is espresso"<<endl;
+                                cout<<count_espresso<<" espresso"<<endl;
+                            }
+                            else if(count_cappuccino==count_espresso&&count_cappuccino>count_latte)
+                            {
+                                cout<<"Same selling cappuccino and latte coffee"<<endl;
+                                cout<<count_cappuccino<<" Amount of coffee of each type"<<endl;
+                            }
+                            else if(count_latte==count_espresso&&count_latte>count_cappuccino)
+                            {
+                                cout<<"Same selling espresso and latte coffee"<<endl;
+                                cout<<count_latte<<" Amount of coffee of each type"<<endl;
+                            }
+                            else if(count_latte==count_cappuccino&&count_latte>count_espresso)
+                            {
+                                cout<<"Same selling cappuccino and latte coffee"<<endl;
+                                cout<<count_latte<<" Amount of coffee of each type"<<endl;
+                            }
+                            pauseConsole();
+                            break;
+						case 7:
 							adminMenu = false;
 							pinMenu = false;
 							break;
@@ -303,7 +347,8 @@ void showAdminMenu(double shopBalance, int cups)
 	cout << "3. Change price" << endl;
 	cout << "4. Change PIN" << endl;
 	cout << "5. Check sum" << endl;
-	cout << "6. Back to main menu" << endl;
+    cout << "6. Check most sell coffee" << endl;
+	cout << "7. Back to main menu" << endl;
 	cout << "------------------------" << endl;
 }
 
@@ -516,4 +561,20 @@ bool Check_Winner(double& userBalance, int& countorder)
 void CalculatedMoney(double price,double &Sum)
 {
 	Sum += price;
+}
+
+void Check_most(int menuChoice, int &count_espresso,int &count_cappuccino, int &count_latte)
+{
+    if(menuChoice==2)
+    {
+        count_espresso++;
+    }
+    if(menuChoice==3)
+    {
+        count_cappuccino++;
+    }
+    if(menuChoice==4)
+    {
+        count_latte++;
+    }
 }
